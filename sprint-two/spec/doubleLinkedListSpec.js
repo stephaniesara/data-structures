@@ -1,5 +1,5 @@
 describe('doubleLinkedList', function() {
-  var doubleLinkedList;
+  var doubleLinkedList; 
 
   beforeEach(function() {
     doubleLinkedList = DoubleLinkedList();

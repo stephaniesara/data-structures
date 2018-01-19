@@ -1,7 +1,7 @@
 var DoubleLinkedList = function() {
   let list = {};
   list.head = null;
-  list.tail = null;
+  list.tail = null; 
 
   list.addToHead = function(value) {
     if (list.head) {
