@@ -37,4 +37,17 @@ describe('binarySearchTree', function() {
     binarySearchTree.depthFirstLog(func);
     expect(array).to.eql([5, 2, 3, 7]);
   });
+
+  it('should execute "depthFirstLog" without error even when user passes callback not to spec', function() {
+      binarySearchTree.insert(2);
+      binarySearchTree.insert(3);
+      binarySearchTree.insert(7);
+      binarySearchTree.depthFirstLog(null);
+      binarySearchTree.depthFirstLog(undefined);
+      binarySearchTree.depthFirstLog();
+      binarySearchTree.depthFirstLog(8);
+      expect(true).to.eql(true);
+    });
 });
+
+

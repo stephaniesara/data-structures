@@ -14,7 +14,7 @@ BinarySearchTree.prototype.insert = function(value) {
     } else {
       node[side].insert(value);
     }
-  }
+  };
   
   if (value < this.value) {
     insertToSide('left', this);
@@ -34,6 +34,9 @@ BinarySearchTree.prototype.contains = function(value) {
 };
 
 BinarySearchTree.prototype.depthFirstLog = function(cb) {
+  if (typeof cb !== 'function') {
+    return;
+  }
   cb(this.value);
   !!this.left && this.left.depthFirstLog(cb);
   !!this.right && this.right.depthFirstLog(cb);
