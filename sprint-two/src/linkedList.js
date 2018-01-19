@@ -21,6 +21,12 @@ var LinkedList = function() {
     return oldHead.value;
   };
 
+  list.addToHead = function(value) {
+    let node = Node(value);
+    node.next = list.head;
+    list.head = node;
+  };
+
   list.contains = function(target) {
     let node = list.head;
     while (node) {
