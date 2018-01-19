@@ -14,6 +14,15 @@ treeMethods.addChild = function(value) {
   this.children.push(Tree(value));
 };
 
+treeMethods.removeChild = function(value) {
+  var indexOfValue = this.children.findIndex(function(elem) {
+    return value === elem.value;
+  });
+  if (indexOfValue > -1) {
+    this.children.splice(indexOfValue, 1);
+  }
+};
+
 treeMethods.contains = function(target) {
   if (this.value === target) {
     return true;
@@ -29,6 +38,7 @@ treeMethods.traverse = function(cb) {
     this.children[i].traverse(cb);
   }
 };
+
 
 
 /*
