@@ -30,15 +30,6 @@ var LinkedList = function() {
       node = node.next;
     }
     return false;
-    
-    // while (node && node.value !== target){
-    //   node = node.next;
-    // }
-    // if (node) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
   };
 
   return list;
