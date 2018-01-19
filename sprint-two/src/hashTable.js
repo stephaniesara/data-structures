@@ -2,10 +2,16 @@
 
 var HashTable = function() {
   this._limit = 8;
+  this._count = 0;
   this._storage = LimitedArray(this._limit);
 };
 
 HashTable.prototype.insert = function(k, v) {
+  ++(this._count);
+  // if this insert goes above 75% double up
+  if (this._count / this._limit > 0.75) {
+    this._resize(2);
+  }
   var index = getIndexBelowMaxForKey(k, this._limit);
   let slotValue = this._storage.get(index);
   if (slotValue === undefined) {
@@ -25,6 +31,7 @@ HashTable.prototype.retrieve = function(k) {
 };
 
 HashTable.prototype.remove = function(k) {
+  // if this remove goes below 25% halve the size 
   var index = getIndexBelowMaxForKey(k, this._limit);
   let slotValue = this._storage.get(index);
   if (slotValue !== undefined) {
@@ -35,18 +42,26 @@ HashTable.prototype.remove = function(k) {
       this._storage.set(index, slotValue);
     }
   }
+  --(this._count);
+  if (this._limit > 8 && this._count / this._limit < 0.25) {
+    this._resize(0.5);
+  }
 };
 
-// HashTable.prototype._findEmptySlot = function(k) {
-//   var index = getIndexBelowMaxForKey(k, this._limit);
-//   while (index < this._limit && this._storage.get(index) !== undefined) {
-//     ++index;
-//   }
-//   if (index === this._limit) {
-//     throw Error('Not enough space in HashTable');
-//   }
-//   return index;
-// };
+HashTable.prototype._resize = function(factor) {
+  let oldLimit = this._limit;
+  this._limit = Math.floor(this._limit * factor);
+  let oldStorage = this._storage;
+  this._storage = LimitedArray(this._limit);
+  this._count = 0;
+  for (let i = 0; i < oldLimit; ++i) {
+    let slotValue = oldStorage.get(i);
+    for (let k in slotValue) {
+      this.insert(k, slotValue[k]);
+    }
+  }  
+};
+
 
 /*
  * Complexity: What is the time complexity of the above functions?
