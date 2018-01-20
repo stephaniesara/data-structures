@@ -3,6 +3,7 @@ var BinarySearchTree = function(value) {
   newBST.left = null;
   newBST.right = null;
   newBST.value = value;
+  newBST.size = 1;
   return newBST;
 };
 
@@ -11,11 +12,12 @@ BinarySearchTree.prototype.insert = function(value) {
   var insertToSide = function(side, node) {
     if (node[side] === null) {
       node[side] = BinarySearchTree(value);
+      
     } else {
       node[side].insert(value);
     }
   };
-  
+  ++(this.size);
   if (value < this.value) {
     insertToSide('left', this);
   } else if (value > this.value) {
@@ -64,7 +66,6 @@ BinarySearchTree.prototype.findClosest = function(target) {
   }
   return this.value;
 };
-
 // This is a way of avoiding utilizing 'this' to its best capacity
 // BinarySearchTree.prototype.findClosest = function(target, parent) {
 //   if (!!this.right && this.value < target) {
@@ -74,6 +75,47 @@ BinarySearchTree.prototype.findClosest = function(target) {
 //   }
 //   return parent.value;
 // };
+
+/**
+ * Implements the Day-Stout-Warren algorithm
+ * https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
+ */
+
+BinarySearchTree.prototype.treeToVine = function() {
+  let tail = this;
+  let rest = tail.right;
+  while (rest !== null) {
+    if (rest.left === null) {
+      tail = rest;
+      rest = rest.right;
+    } else {
+      let temp = rest.left;
+      rest.left = temp.right;
+      temp.right = rest;
+      rest = temp;
+      tail.right = temp;
+    }
+  }
+};
+
+
+BinarySearchTree.prototype.vineToTree = function() {
+  var compress = function(root, count) {
+    let scanner = root;
+    for (let i = 0; i < count; ++i) {
+      let child = scanner.right;
+      scanner.right = child.right;
+      scanner = scanner.right;
+      child.right = scanner.left;
+      scanner.left = child;
+    }
+  };
+
+  // let leaves = this.size 
+
+
+};
+
 
 /*
  * Complexity: What is the time complexity of the above functions?
