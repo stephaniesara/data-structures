@@ -80,3 +80,7 @@ HashTable.prototype._resize = function(factor) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+// .findTuple     O(n)  in relation to the number of tuples at that index
+// .insert        O(n)  in relation to the number of tuples at that index
+// .remove        O(n)  in relation to the number of tuples at that index
+// .resize        O(n)

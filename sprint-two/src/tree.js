@@ -44,3 +44,7 @@ treeMethods.traverse = function(cb) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+// .addChild      O(1)
+// .removeChild   O(n) on the number of children at the node 
+// .contains      O(n)
+// .traverse      O(n)
