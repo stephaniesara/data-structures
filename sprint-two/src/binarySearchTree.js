@@ -42,6 +42,20 @@ BinarySearchTree.prototype.depthFirstLog = function(cb) {
   !!this.right && this.right.depthFirstLog(cb);
 };
 
+BinarySearchTree.prototype.breadthFirstLog = function(cb, childrenQueue) {
+  if (typeof cb !== 'function') {
+    return;
+  }
+  childrenQueue = childrenQueue === undefined ? LinkedList() : childrenQueue;
+  cb(this.value);
+  !!this.left && childrenQueue.addToTail(this.left);
+  !!this.right && childrenQueue.addToTail(this.right);
+  var nextNode = childrenQueue.removeHead();
+  if (nextNode !== null) {
+    nextNode.breadthFirstLog(cb, childrenQueue);
+  }
+};
+
 /*
  * Complexity: What is the time complexity of the above functions?
  */
