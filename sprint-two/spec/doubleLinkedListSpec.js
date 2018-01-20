@@ -106,4 +106,56 @@ describe('doubleLinkedList', function() {
   });
 
   // add more tests here to test the functionality of doubleLinkedList
+  it('should find a node that was added', function() {
+    doubleLinkedList.addToTail(4);
+    doubleLinkedList.addToTail(5);
+    expect((doubleLinkedList.find(function(ele) { 
+      return ele.value === 4; 
+    })) !== undefined).to.equal(true);
+    expect((doubleLinkedList.find(function(ele) { 
+      return ele.value === 5; 
+    })) !== undefined).to.equal(true);
+    expect((doubleLinkedList.find(function(ele) { 
+      return ele.value === 6; 
+    })) !== undefined).to.equal(false);
+  });
+
+  it('should remove a node when removeNode is called', function() {
+    doubleLinkedList.addToTail(4);
+    doubleLinkedList.addToTail(5);
+    doubleLinkedList.addToTail(6);
+    let node = doubleLinkedList.find(function(ele) { 
+      return ele.value === 5; 
+    });
+    doubleLinkedList.removeNode(node);
+    expect(doubleLinkedList.contains(4)).to.equal(true);
+    expect(doubleLinkedList.contains(5)).to.equal(false);
+    expect(doubleLinkedList.contains(6)).to.equal(true);
+  });
+
+  it('should remove a node when removeNode is called on first node', function() {
+    doubleLinkedList.addToTail(4);
+    doubleLinkedList.addToTail(5);
+    doubleLinkedList.addToTail(6);
+    let node = doubleLinkedList.find(function(ele) { 
+      return ele.value === 4; 
+    });
+    doubleLinkedList.removeNode(node);
+    expect(doubleLinkedList.contains(4)).to.equal(false);
+    expect(doubleLinkedList.contains(5)).to.equal(true);
+    expect(doubleLinkedList.contains(6)).to.equal(true);
+  });
+
+  it('should remove a node when removeNode is called on last node', function() {
+    doubleLinkedList.addToTail(4);
+    doubleLinkedList.addToTail(5);
+    doubleLinkedList.addToTail(6);
+    let node = doubleLinkedList.find(function(ele) { 
+      return ele.value === 6; 
+    });
+    doubleLinkedList.removeNode(node);
+    expect(doubleLinkedList.contains(4)).to.equal(true);
+    expect(doubleLinkedList.contains(5)).to.equal(true);
+    expect(doubleLinkedList.contains(6)).to.equal(false);
+  });
 });

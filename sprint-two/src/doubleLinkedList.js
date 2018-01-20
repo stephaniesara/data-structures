@@ -51,6 +51,22 @@ var DoubleLinkedList = function() {
     return false;
   };
 
+  list.find = function(fn) {
+    let node = list.head;
+    while (node) {
+      if (fn(node)) {
+        return node;
+      }
+      node = node.next;
+    }
+    return undefined;
+  };
+
+  list.removeNode = function(target) {
+    target.next === null ? (list.tail = target.prev) : (target.next.prev = target.prev);
+    target.prev === null ? (list.head = target.next) : (target.prev.next = target.next);
+  };
+
   return list;
 };
 
