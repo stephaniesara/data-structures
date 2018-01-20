@@ -1,5 +1,3 @@
-
-
 var HashTable = function() {
   this._limit = 8;
   this._count = 0;
@@ -75,10 +73,6 @@ HashTable.prototype._resize = function(factor) {
       let tuple = slotValue.removeHead();
       this.insert(tuple[0], tuple[1]);
     }
-    // for (let k in slotValue) {
-    //   this.insert(k, slotValue[k]);
-    // }
-    
   }  
 };
 
@@ -86,8 +80,3 @@ HashTable.prototype._resize = function(factor) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
-
-// let list = DoubleLinkedList();
-// list.addToTail([k, v]);
-// this._storage.set(index, list);
-
