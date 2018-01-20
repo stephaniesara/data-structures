@@ -56,6 +56,30 @@ BinarySearchTree.prototype.breadthFirstLog = function(cb, childrenQueue) {
   }
 };
 
+BinarySearchTree.prototype.findClosest = function(target) {
+  if (!!this.right && this.value < target) {
+    return this.right.findClosest(target);
+  } else if (!!this.left && this.value > target) {
+    return this.left.findClosest(target);
+  }
+  return this.value;
+};
+
+// This is a way of avoiding utilizing 'this' to its best capacity
+// BinarySearchTree.prototype.findClosest = function(target, parent) {
+//   if (!!this.right && this.value < target) {
+//     return this.right.findClosest(target, this.right);
+//   } else if (!!this.left && this.value > target) {
+//     return this.left.findClosest(target, this.left);
+//   }
+//   return parent.value;
+// };
+
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+// .insert       O(logn)  Although depending on order of inputs it can be O(n)
+// .contains     O(logn)  Although depending on order of inputs it can be O(n)
+// .depthFirstLog     O(n)
+// .breadthFirstLog   O(n)
+// .findClosest  O(logn)

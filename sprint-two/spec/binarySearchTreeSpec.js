@@ -69,6 +69,17 @@ describe('binarySearchTree', function() {
     binarySearchTree.breadthFirstLog(8);
     expect(true).to.eql(true);
   });
+
+  it('should have a working "findClosest" method', function() {
+    binarySearchTree.insert(100);
+    for (let i = 0; i < 1000000; ++i) {
+      binarySearchTree.insert(Math.floor((Math.random() * 100000)) + 101);
+    }
+    binarySearchTree.insert(2000000);
+    expect(binarySearchTree.findClosest(99)).to.equal(100);
+    expect(binarySearchTree.findClosest(2000000)).to.equal(2000000);
+    expect(binarySearchTree.findClosest(3000000)).to.equal(2000000);
+  });
 });
 
 
