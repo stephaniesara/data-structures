@@ -62,6 +62,10 @@ var DoubleLinkedList = function() {
     return undefined;
   };
 
+  list.isEmpty = function() {
+    return list.head === null;
+  };
+
   list.removeNode = function(target) {
     target.next === null ? (list.tail = target.prev) : (target.next.prev = target.prev);
     target.prev === null ? (list.head = target.next) : (target.prev.next = target.next);
