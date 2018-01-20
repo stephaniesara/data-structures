@@ -67,13 +67,23 @@ HashTable.prototype._resize = function(factor) {
   let oldStorage = this._storage;
   this._storage = LimitedArray(this._limit);
   this._count = 0;
-  for (let i = 0; i < oldLimit; ++i) {
-    let slotValue = oldStorage.get(i);
-    while (slotValue !== undefined && !slotValue.isEmpty()) {
-      let tuple = slotValue.removeHead();
-      this.insert(tuple[0], tuple[1]);
+  let hashTable = this;
+  oldStorage.each(function(ele, idx) {
+    while (ele !== undefined && !ele.isEmpty()) {
+      let tuple = ele.removeHead();
+      hashTable.insert(tuple[0], tuple[1]);
     }
-  }  
+  });
+
+  // An alternative way of looping through the LimitedArray
+  // for (let i = 0; i < oldLimit; ++i) {
+  //   let slotValue = oldStorage.get(i);
+  //   while (slotValue !== undefined && !slotValue.isEmpty()) {
+  //     let tuple = slotValue.removeHead();
+  //     this.insert(tuple[0], tuple[1]);
+  //   }
+  // }  
+
 };
 
 
