@@ -3,6 +3,7 @@ describe('binarySearchTree', function() {
 
   beforeEach(function() {
     binarySearchTree = BinarySearchTree(5);
+    binarySearchTree.rebalance(false);
   });
 
   it('should have methods named "insert", "contains", and "depthFirstLog', function() {
@@ -79,7 +80,7 @@ describe('binarySearchTree', function() {
     expect(true).to.eql(true);
   });
 
-  xit('should have a working "findClosest" method', function() {
+  it('should have a working "findClosest" method', function() {
     binarySearchTree.insert(100);
     for (let i = 0; i < 1000000; ++i) {
       binarySearchTree.insert(Math.floor((Math.random() * 100000)) + 101);
@@ -92,6 +93,7 @@ describe('binarySearchTree', function() {
 
   it('should transform tree to linkedList if starting in order', function() {
     var resultTree = BinarySearchTree(0);
+    resultTree.rebalance(false);
     var resultArray = [1, 2, 7, 5, 3, 4, 6];
     for (var i = 0; i < resultArray.length; i++) {
       resultTree.insert(resultArray[i]);
@@ -107,6 +109,7 @@ describe('binarySearchTree', function() {
 
   it('should transform a vine into a balanced tree', function() {
     var resultTree = BinarySearchTree(0);
+    resultTree.rebalance(false);
     var resultArray = [1, 2, 5, 3, 4, 6];
     for (var i = 0; i < resultArray.length; i++) {
       resultTree.insert(resultArray[i]);
@@ -125,6 +128,7 @@ describe('binarySearchTree', function() {
 
   it('should transform an unbalanced tree into a balanced tree', function() {
     var resultTree = BinarySearchTree(0);
+    resultTree.rebalance(true);
     var resultArray = [1, 2, 3, 5, 4, 6];
     for (var i = 0; i < resultArray.length; i++) {
       resultTree.insert(resultArray[i]);

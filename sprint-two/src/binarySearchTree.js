@@ -9,10 +9,11 @@ var BinarySearchTreeNode = function(value) {
 var BinarySearchTree = function(value) {
   var newBST = Object.create(BinarySearchTree.prototype);
   newBST.size = 1;
-  newBST.maxHeight = 1;
-  newBST.minHeight = 1;
+  newBST.maxHeight = 0;
+  newBST.minHeight = Infinity;
   newBST.isRoot = true;
   newBST.root = BinarySearchTreeNode(value);
+  newBST.rebalanced = false;
   return newBST;
 };
 
@@ -20,17 +21,17 @@ BinarySearchTreeNode.prototype.insert = function(value) {
   var insertToSide = function(side, node) {
     if (node[side] === null) {
       node[side] = BinarySearchTreeNode(value);
-      return 0;
+      return 1;
     } else {
-      return 1 + node[side].insert(value);
+      return node[side].insert(value);
     }
   };
 
   let depth;
   if (value < this.value) {
-    depth = insertToSide('left', this);
+    depth = 1 + insertToSide('left', this);
   } else if (value > this.value) {
-    depth = insertToSide('right', this);
+    depth = 1 + insertToSide('right', this);
   }
   return depth;
 };
@@ -54,18 +55,41 @@ BinarySearchTreeNode.prototype.depthFirstLog = function(cb) {
   !!this.right && this.right.depthFirstLog(cb);
 };
 
+BinarySearchTreeNode.prototype._updateMinMaxHeight = function(tree, depth) {
+  if (tree.maxHeight < depth) {
+    tree.maxHeight = depth;
+  } 
+  if (tree.minHeight > depth) {
+    tree.minHeight = depth;
+  } 
+};
+
+BinarySearchTreeNode.prototype._calculateMinMaxHeight = function(tree, depth) {
+  ++depth;
+  if ((this.left === null) || (this.right === null)) {
+    this._updateMinMaxHeight(tree, depth);
+  }
+  !!this.right && this.right._calculateMinMaxHeight(tree, depth);
+  !!this.left && this.left._calculateMinMaxHeight(tree, depth);
+};
+
+BinarySearchTree.prototype.rebalance = function(shouldRebalance) {
+  this.rebalanced = shouldRebalance;
+};
+
+BinarySearchTree.prototype.calculateHeight = function() {
+  this.maxHeight = 0;
+  this.minHeight = Infinity;
+  !!this.root && this.root._calculateMinMaxHeight(this, 0);
+};
 
 BinarySearchTree.prototype.insert = function(value) {
   ++(this.size);
-  let depth = this.root.insert(value);
-  if (this.maxHeight < depth) {
-    this.maxHeight = depth;
-  } 
-  if (this.minHeight < depth) {
-    this.minHeight = depth;
-  }
-  if (this.maxHeight > 2 * this.minHeight) {
-    this.root = this.rebalanceDSW();
+  let depth = this.root.insert(value);  
+  this.root._updateMinMaxHeight(this, depth);
+  if (this.rebalanced && this.maxHeight > 2 * this.minHeight) {
+    this.rebalanceDSW();
+    this.calculateHeight();
   } 
 };
 
@@ -171,7 +195,9 @@ BinarySearchTree.prototype.rebalanceDSW = function() {
 
   this.root = pseudoRoot.root.right;
   this.isRoot = true;
-  this.size = pseudoRoot.root.size;
+  this.size = pseudoRoot.size;
+  this.maxHeight = pseudoRoot.maxHeight;
+  this.minHeight = pseudoRoot.minHeight;
 
   return this;
 };
