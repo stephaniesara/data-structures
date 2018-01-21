@@ -113,7 +113,7 @@ var T9 = function(prefix) {
   // let dictionary = ['the', 'dog', 'test', 'another', 'word', 'theocrathy', 'th', 'view', 'random'];
   let frequency = dictionary.map((x, idx) => [x, idx]);
 
-  let  t9Alphabet = [undefined, undefined, ['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i'],
+  let t9Alphabet = [undefined, undefined, ['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i'],
     ['j', 'k', 'l'], ['m', 'n', 'o'], ['p', 'q', 'r', 's'], ['t', 'u', 'v'], ['w', 'x', 'y', 'z']];
   let words = [];
   let searchFor = [];
