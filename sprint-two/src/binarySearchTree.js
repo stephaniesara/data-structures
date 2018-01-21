@@ -1,9 +1,9 @@
-var BinarySearchTree = function(value) {
+var BinarySearchTree = function(value, isroot) {
   var newBST = Object.create(BinarySearchTree.prototype);
   newBST.left = null;
   newBST.right = null;
   newBST.value = value;
-  newBST.size = 1;
+  newBST.root = isroot === undefined ? {isRoot: true, size: 1} : {isRoot: false, size: 0};
   return newBST;
 };
 
@@ -11,13 +11,15 @@ BinarySearchTree.prototype.insert = function(value) {
 
   var insertToSide = function(side, node) {
     if (node[side] === null) {
-      node[side] = BinarySearchTree(value);
+      node[side] = BinarySearchTree(value, false);
       
     } else {
       node[side].insert(value);
     }
   };
-  ++(this.size);
+  if (this.root.isRoot) {
+    ++(this.root.size);
+  }
   if (value < this.value) {
     insertToSide('left', this);
   } else if (value > this.value) {
@@ -111,9 +113,33 @@ BinarySearchTree.prototype.vineToTree = function() {
     }
   };
 
-  // let leaves = this.size 
+  let size = this.root.size;
+  let leaves = size + 1 - Math.pow(2, Math.floor(Math.log2(size + 1)));
+  compress(this, leaves);
+  size -= leaves;
+  while (size > 1) {
+    size = Math.floor(size / 2);
+    compress(this, size);
+  }
+};
 
+BinarySearchTree.prototype.rebalanceDSW = function() {
+  let pseudoRoot = BinarySearchTree();
+  pseudoRoot.right = this;
+  pseudoRoot.root.size = this.root.size;
+  this.root.isRoot = false;
+  this.root.size = 0;
 
+  pseudoRoot.treeToVine();
+  pseudoRoot.vineToTree();
+
+  let newRoot = pseudoRoot.right;
+  newRoot.root.isRoot = true;
+  newRoot.root.size = pseudoRoot.root.size;
+
+  pseudoRoot.right = null;
+  pseudoRoot.left = null;
+  return newRoot;
 };
 
 

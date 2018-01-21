@@ -21,16 +21,16 @@ describe('binarySearchTree', function() {
   });
 
   it('should have the correct size after inserting values in the tree', function() {
-    expect(binarySearchTree.size).to.equal(1);
+    expect(binarySearchTree.root.size).to.equal(1);
     binarySearchTree.insert(2);
     binarySearchTree.insert(3);
     binarySearchTree.insert(7);
     binarySearchTree.insert(6);
-    expect(binarySearchTree.size).to.equal(5);
-    expect(binarySearchTree.left.size).to.equal(2);
-    expect(binarySearchTree.left.right.size).to.equal(1);
-    expect(binarySearchTree.right.size).to.equal(2);
-    expect(binarySearchTree.right.left.size).to.equal(1);
+    expect(binarySearchTree.root.size).to.equal(5);
+    expect(binarySearchTree.left.root.size).to.equal(0);
+    expect(binarySearchTree.left.right.root.size).to.equal(0);
+    expect(binarySearchTree.right.root.size).to.equal(0);
+    expect(binarySearchTree.right.left.root.size).to.equal(0);
   });
 
   it('should have a working "contains" method', function() {
@@ -116,7 +116,8 @@ describe('binarySearchTree', function() {
       resultTree.insert(resultArray[i]);
     }
 
-    resultTree.vineToTree();
+    resultTree = resultTree.rebalanceDSW();
+
     expect(resultTree.value).to.equal(3);
     expect(resultTree.left.value).to.equal(1);
     expect(resultTree.right.value).to.equal(5);
