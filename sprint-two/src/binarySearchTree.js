@@ -56,9 +56,8 @@ BinarySearchTreeNode.prototype.depthFirstLog = function(cb) {
 
 
 BinarySearchTree.prototype.insert = function(value) {
-  let depth;
   ++(this.size);
-  this.root.insert(value);
+  let depth = this.root.insert(value);
   if (this.maxHeight < depth) {
     this.maxHeight = depth;
   } 

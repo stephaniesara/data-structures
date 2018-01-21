@@ -79,7 +79,7 @@ describe('binarySearchTree', function() {
     expect(true).to.eql(true);
   });
 
-  it('should have a working "findClosest" method', function() {
+  xit('should have a working "findClosest" method', function() {
     binarySearchTree.insert(100);
     for (let i = 0; i < 1000000; ++i) {
       binarySearchTree.insert(Math.floor((Math.random() * 100000)) + 101);
@@ -105,7 +105,7 @@ describe('binarySearchTree', function() {
     }
   });
 
-  it('should transform a vine into a balance tree', function() {
+  it('should transform a vine into a balanced tree', function() {
     var resultTree = BinarySearchTree(0);
     var resultArray = [1, 2, 5, 3, 4, 6];
     for (var i = 0; i < resultArray.length; i++) {
@@ -123,6 +123,21 @@ describe('binarySearchTree', function() {
     expect(resultTree.root.right.right.value).to.equal(6);
   });
 
+  it('should transform an unbalanced tree into a balanced tree', function() {
+    var resultTree = BinarySearchTree(0);
+    var resultArray = [1, 2, 3, 5, 4, 6];
+    for (var i = 0; i < resultArray.length; i++) {
+      resultTree.insert(resultArray[i]);
+    }
+
+    expect(resultTree.root.value).to.equal(3);
+    expect(resultTree.root.left.value).to.equal(1);
+    expect(resultTree.root.right.value).to.equal(5);
+    expect(resultTree.root.left.left.value).to.equal(0);
+    expect(resultTree.root.left.right.value).to.equal(2);
+    expect(resultTree.root.right.left.value).to.equal(4);
+    expect(resultTree.root.right.right.value).to.equal(6);
+  });
 
 });
 
