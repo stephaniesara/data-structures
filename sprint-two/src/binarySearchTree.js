@@ -1,33 +1,41 @@
-var BinarySearchTree = function(value, isroot) {
+var BinarySearchTreeNode = function(value) {
+  let node = Object.create(BinarySearchTreeNode.prototype);
+  node.left = null;
+  node.right = null;
+  node.value = value;
+  return node;
+};
+
+var BinarySearchTree = function(value) {
   var newBST = Object.create(BinarySearchTree.prototype);
-  newBST.left = null;
-  newBST.right = null;
-  newBST.value = value;
-  newBST.root = isroot === undefined ? {isRoot: true, size: 1} : {isRoot: false, size: 0};
+  newBST.size = 1;
+  newBST.maxHeight = 1;
+  newBST.minHeight = 1;
+  newBST.isRoot = true;
+  newBST.root = BinarySearchTreeNode(value);
   return newBST;
 };
 
-BinarySearchTree.prototype.insert = function(value) {
-
+BinarySearchTreeNode.prototype.insert = function(value) {
   var insertToSide = function(side, node) {
     if (node[side] === null) {
-      node[side] = BinarySearchTree(value, false);
-      
+      node[side] = BinarySearchTreeNode(value);
+      return 0;
     } else {
-      node[side].insert(value);
+      return 1 + node[side].insert(value);
     }
   };
-  if (this.root.isRoot) {
-    ++(this.root.size);
-  }
+
+  let depth;
   if (value < this.value) {
-    insertToSide('left', this);
+    depth = insertToSide('left', this);
   } else if (value > this.value) {
-    insertToSide('right', this);
+    depth = insertToSide('right', this);
   }
+  return depth;
 };
 
-BinarySearchTree.prototype.contains = function(value) {
+BinarySearchTreeNode.prototype.contains = function(value) {
   if (this.value === value) {
     return true;
   } else if (this.value > value) {   
@@ -37,7 +45,7 @@ BinarySearchTree.prototype.contains = function(value) {
   }  
 };
 
-BinarySearchTree.prototype.depthFirstLog = function(cb) {
+BinarySearchTreeNode.prototype.depthFirstLog = function(cb) {
   if (typeof cb !== 'function') {
     return;
   }
@@ -46,7 +54,23 @@ BinarySearchTree.prototype.depthFirstLog = function(cb) {
   !!this.right && this.right.depthFirstLog(cb);
 };
 
-BinarySearchTree.prototype.breadthFirstLog = function(cb, childrenQueue) {
+
+BinarySearchTree.prototype.insert = function(value) {
+  let depth;
+  ++(this.size);
+  this.root.insert(value);
+  if (this.maxHeight < depth) {
+    this.maxHeight = depth;
+  } 
+  if (this.minHeight < depth) {
+    this.minHeight = depth;
+  }
+  if (this.maxHeight > 2 * this.minHeight) {
+    this.root = this.rebalanceDSW();
+  } 
+};
+
+BinarySearchTreeNode.prototype.breadthFirstLog = function(cb, childrenQueue) {
   if (typeof cb !== 'function') {
     return;
   }
@@ -60,7 +84,7 @@ BinarySearchTree.prototype.breadthFirstLog = function(cb, childrenQueue) {
   }
 };
 
-BinarySearchTree.prototype.findClosest = function(target) {
+BinarySearchTreeNode.prototype.findClosest = function(target) {
   if (!!this.right && this.value < target) {
     return this.right.findClosest(target);
   } else if (!!this.left && this.value > target) {
@@ -78,13 +102,29 @@ BinarySearchTree.prototype.findClosest = function(target) {
 //   return parent.value;
 // };
 
+BinarySearchTree.prototype.contains = function(value) {
+  return this.root.contains(value);
+};
+
+BinarySearchTree.prototype.depthFirstLog = function(cb) {
+  this.root.depthFirstLog(cb);
+};
+
+BinarySearchTree.prototype.breadthFirstLog = function(cb, childrenQueue) {
+  this.root.breadthFirstLog(cb, childrenQueue);
+};
+
+BinarySearchTree.prototype.findClosest = function(target) {
+  return this.root.findClosest(target);
+};
+
 /**
  * Implements the Day-Stout-Warren algorithm
  * https://en.wikipedia.org/wiki/Day%E2%80%93Stout%E2%80%93Warren_algorithm
  */
 
 BinarySearchTree.prototype.treeToVine = function() {
-  let tail = this;
+  let tail = this.root;
   let rest = tail.right;
   while (rest !== null) {
     if (rest.left === null) {
@@ -113,33 +153,28 @@ BinarySearchTree.prototype.vineToTree = function() {
     }
   };
 
-  let size = this.root.size;
+  let size = this.size;
   let leaves = size + 1 - Math.pow(2, Math.floor(Math.log2(size + 1)));
-  compress(this, leaves);
+  compress(this.root, leaves);
   size -= leaves;
   while (size > 1) {
     size = Math.floor(size / 2);
-    compress(this, size);
+    compress(this.root, size);
   }
 };
 
 BinarySearchTree.prototype.rebalanceDSW = function() {
   let pseudoRoot = BinarySearchTree();
-  pseudoRoot.right = this;
-  pseudoRoot.root.size = this.root.size;
-  this.root.isRoot = false;
-  this.root.size = 0;
-
+  pseudoRoot.root.right = this.root;
+  pseudoRoot.size = this.size;
   pseudoRoot.treeToVine();
   pseudoRoot.vineToTree();
 
-  let newRoot = pseudoRoot.right;
-  newRoot.root.isRoot = true;
-  newRoot.root.size = pseudoRoot.root.size;
+  this.root = pseudoRoot.root.right;
+  this.isRoot = true;
+  this.size = pseudoRoot.root.size;
 
-  pseudoRoot.right = null;
-  pseudoRoot.left = null;
-  return newRoot;
+  return this;
 };
 
 

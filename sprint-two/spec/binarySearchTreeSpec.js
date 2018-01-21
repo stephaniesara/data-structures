@@ -16,21 +16,17 @@ describe('binarySearchTree', function() {
     binarySearchTree.insert(3);
     binarySearchTree.insert(7);
     binarySearchTree.insert(6);
-    expect(binarySearchTree.left.right.value).to.equal(3);
-    expect(binarySearchTree.right.left.value).to.equal(6);
+    expect(binarySearchTree.root.left.right.value).to.equal(3);
+    expect(binarySearchTree.root.right.left.value).to.equal(6);
   });
 
   it('should have the correct size after inserting values in the tree', function() {
-    expect(binarySearchTree.root.size).to.equal(1);
+    expect(binarySearchTree.size).to.equal(1);
     binarySearchTree.insert(2);
     binarySearchTree.insert(3);
     binarySearchTree.insert(7);
     binarySearchTree.insert(6);
-    expect(binarySearchTree.root.size).to.equal(5);
-    expect(binarySearchTree.left.root.size).to.equal(0);
-    expect(binarySearchTree.left.right.root.size).to.equal(0);
-    expect(binarySearchTree.right.root.size).to.equal(0);
-    expect(binarySearchTree.right.left.root.size).to.equal(0);
+    expect(binarySearchTree.size).to.equal(5);
   });
 
   it('should have a working "contains" method', function() {
@@ -83,7 +79,7 @@ describe('binarySearchTree', function() {
     expect(true).to.eql(true);
   });
 
-  xit('should have a working "findClosest" method', function() {
+  it('should have a working "findClosest" method', function() {
     binarySearchTree.insert(100);
     for (let i = 0; i < 1000000; ++i) {
       binarySearchTree.insert(Math.floor((Math.random() * 100000)) + 101);
@@ -102,7 +98,7 @@ describe('binarySearchTree', function() {
     }
 
     resultTree.treeToVine();
-    var node = resultTree;
+    var node = resultTree.root;
     for (var i = 0; i < resultArray.length; i++) {
       expect(node.value).to.equal(i);
       node = node.right;
@@ -116,15 +112,15 @@ describe('binarySearchTree', function() {
       resultTree.insert(resultArray[i]);
     }
 
-    resultTree = resultTree.rebalanceDSW();
+    resultTree.rebalanceDSW();
 
-    expect(resultTree.value).to.equal(3);
-    expect(resultTree.left.value).to.equal(1);
-    expect(resultTree.right.value).to.equal(5);
-    expect(resultTree.left.left.value).to.equal(0);
-    expect(resultTree.left.right.value).to.equal(2);
-    expect(resultTree.right.left.value).to.equal(4);
-    expect(resultTree.right.right.value).to.equal(6);
+    expect(resultTree.root.value).to.equal(3);
+    expect(resultTree.root.left.value).to.equal(1);
+    expect(resultTree.root.right.value).to.equal(5);
+    expect(resultTree.root.left.left.value).to.equal(0);
+    expect(resultTree.root.left.right.value).to.equal(2);
+    expect(resultTree.root.right.left.value).to.equal(4);
+    expect(resultTree.root.right.right.value).to.equal(6);
   });
 
 
