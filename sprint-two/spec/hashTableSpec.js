@@ -74,9 +74,9 @@ describe('hashTable', function() {
     expect(hashTable._limit).to.equal(8);
   });
 
-  xit('THIS BROKE MY CODE', function() {
-    // copy the random operations here
-  });
+  // xit('THIS BROKE MY CODE', function() {
+  //   // copy the random operations here
+  // });
 
   it('random testing', function() {
     // keep a log of all operations
