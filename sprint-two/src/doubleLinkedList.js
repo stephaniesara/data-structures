@@ -67,6 +67,9 @@ var DoubleLinkedList = function() {
   };
 
   list.removeNode = function(target) {
+    if (!target) {
+      return;
+    }
     target.next === null ? (list.tail = target.prev) : (target.next.prev = target.prev);
     target.prev === null ? (list.head = target.next) : (target.prev.next = target.next);
   };

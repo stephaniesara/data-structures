@@ -73,4 +73,65 @@ describe('hashTable', function() {
     hashTable.remove('Mr.');
     expect(hashTable._limit).to.equal(8);
   });
+
+  xit('THIS BROKE MY CODE', function() {
+    // copy the random operations here
+  });
+
+  it('random testing', function() {
+    // keep a log of all operations
+    var operationsLog = '';
+
+    // identify an oracle - the source of truth
+    var oracle = {};
+
+    // do the following n times
+    for (var i = 0; i < 50; i++) { 
+      // generate random arguments
+      var key = Math.floor(Math.random() * 50);
+      var val = Math.floor(Math.random() * 50);
+
+      // identify all possible inputs and choose one randomly
+      var operation = Math.random();
+      if (operation < 0.5) {
+        // insert
+
+        // log the operation
+        operationsLog += 'hashTable.insert(' + key + ', ' + val + ');\n';
+
+        // insert into both the hashTable and the oracle
+        hashTable.insert(key, val);
+        oracle[key] = val;
+
+        // check if it is correct -> check it against the oracle
+
+        // log all operations if test failed
+        if (hashTable.retrieve(key) !== oracle[key]) {
+          console.log('FAILED');
+          console.log(operationsLog);
+        }
+
+        expect(hashTable.retrieve(key)).to.equal(oracle[key]);
+      } else {
+        // remove
+
+        // log the operation
+        operationsLog += 'hashTable.remove(' + key + ');\n';
+
+        // remove from both the hashTable and the oracle
+        hashTable.remove(key);
+        delete oracle[key];
+
+        // check if it is correct -> check it against the oracle
+
+        // log all operations if test failed
+        if (hashTable.retrieve(key) !== oracle[key]) {
+          console.log('FAILED');
+          console.log(operationsLog);
+        }
+
+        expect(hashTable.retrieve(key)).to.equal(oracle[key]);
+      }
+    }
+  });
 });

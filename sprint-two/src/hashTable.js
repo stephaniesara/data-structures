@@ -38,7 +38,10 @@ HashTable.prototype.retrieve = function(k) {
   if (slotValue === undefined) {
     return undefined;
   }
-  return this.findTuple(k, index).value[1];
+  if (this.findTuple(k, index)) {
+    return this.findTuple(k, index).value[1];
+  }
+  return undefined;
 };
 
 HashTable.prototype.remove = function(k) {
