@@ -5,15 +5,19 @@ var Stack = function() {
   let storage = {};
   let count = 0;
 
+  var count = 0;
+
   // Implement the methods below
   someInstance.push = function(value) {
-    storage[count++] = value;
+    storage[count] = value;
+    count++;
   };
 
   someInstance.pop = function() {
     if (count > 0) {
-      return storage[--count];
+      count--;
     }
+    return storage[count];
   };
 
   someInstance.size = function() {
